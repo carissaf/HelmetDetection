@@ -27,8 +27,7 @@ export default defineComponent({
 </script>
 
 <template>
-  <nav class="fixed top-5 flex flex-row justify-center gap-3 -translate-x-1/2 left-1/2 py-2 px-4 border border-gray-800 rounded-full">
-    <!-- Loop through the navigation links -->
+  <nav class="fixed top-5 flex flex-row justify-center gap-3 -translate-x-1/2 left-1/2 py-2 px-3 border border-gray-800 rounded-full backdrop-blur bg-[rgba(255,255,255,0.7)]">
     <a
         v-for="link in links"
         :key="link.name"

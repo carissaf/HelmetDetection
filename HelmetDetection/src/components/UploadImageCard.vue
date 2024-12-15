@@ -70,32 +70,42 @@ export default defineComponent({
 </script>
 
 <template>
-  <div class="flex flex-col items-center space-y-4">
-    <div v-if="!submitted">
-      <form @submit.prevent="uploadImage" class="flex flex-col items-center space-y-4">
-        <input type="file" @change="onFileChange" accept="image/*" />
+  <div class="flex flex-col items-center space-y-4 border border-gray-800 w-2/3 p-10 rounded-3xl">
+    <div v-if="!submitted" class="flex flex-row justify-between w-full items-center">
+      <img src="/upload-img-banner.png" alt="Upload Image" class="w-[55%] rounded-lg" />
+
+      <form @submit.prevent="uploadImage" class="flex flex-col w-[40%] justify-between">
+        <div class="w-full mb-16">
+          <h1 class="font-bold text-2xl mb-5">Upload Your Image Here</h1>
+          <input type="file" @change="onFileChange" accept="image/*" class="border border-gray-400 p-3 rounded-xl w-full" />
+        </div>
         <button
             type="submit"
-            class="bg-blue-500 text-white px-4 py-2 rounded"
+            class="py-2 px-4 rounded-full bg-gray-800 text-white self-end"
             :disabled="!selectedFile"
         >
-          Upload
+          Detect Helmet
         </button>
       </form>
     </div>
 
-    <div v-else>
-      <h3 class="text-lg font-semibold">Results</h3>
-      <p class="text-green-600 font-bold">Class: {{ predictedClass }}</p>
-      <p>Confidence: {{ (confidence * 100).toFixed(2) }}%</p>
-      <img :src="returnedImage" alt="Processed" class="border rounded shadow mt-4 w-[200px] h-[200px] object-cover" />
+    <div v-else class="flex flex-row justify-between w-full items-center">
+      <img :src="returnedImage" alt="Processed" class="rounded w-[55%]" />
 
-      <button
-          class="bg-gray-500 text-white px-4 py-2 rounded mt-4"
-          @click="resetForm"
-      >
-        Upload Another Image
-      </button>
+      <div class="w-[40%] flex flex-col justify-between">
+        <div class="mb-16">
+          <h1 class="font-bold text-2xl mb-5">Results</h1>
+          <p class="text-green-600 font-bold">Class: {{ predictedClass }}</p>
+          <p>Confidence: {{ (confidence * 100).toFixed(2) }}%</p>
+        </div>
+        <button
+            class="py-2 px-4 rounded-full bg-gray-800 text-white self-end"
+            @click="resetForm"
+        >
+          Try Helmet Detector Again
+        </button>
+      </div>
+
     </div>
   </div>
 </template>
