@@ -9,7 +9,7 @@ app = Flask(__name__)
 CORS(app)
 
 # Load model yang sudah dilatih dengan format joblib
-clf = joblib.load('helmet_predictor_model.joblib') 
+clf = joblib.load('helmet_predictor_model.joblib')
 
 # Memberikan ID ke label dan sebaliknya
 label2id = {"0": 0, "helmet": 1}
@@ -130,7 +130,7 @@ def upload_file():
             label_text = f"{predicted_class} ({confidence*100:.2f}%)"
             font = cv2.FONT_HERSHEY_SIMPLEX
             cv2.putText(img_with_bbox, label_text, (x_min, y_min - 10), font, 0.8, (0, 255, 0), 2)
-        
+
         # Mengkodekan gambar dengan bounding box ke dalam base64 untuk dikembalikan ke frontend yang sudah dibuat
         _, buffer = cv2.imencode('.jpg', img_with_bbox)  # Menggunakan img_with_bbox yang sudah ada bounding box
         encoded_image = base64.b64encode(buffer).decode('utf-8')

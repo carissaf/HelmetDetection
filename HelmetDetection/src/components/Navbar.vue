@@ -27,14 +27,14 @@ export default defineComponent({
 </script>
 
 <template>
-  <nav class="fixed top-5 flex flex-row justify-center gap-3 -translate-x-1/2 left-1/2 py-2 px-3 border border-gray-800 rounded-full backdrop-blur bg-[rgba(255,255,255,0.7)]">
+  <nav class="z-10 fixed top-5 flex flex-row justify-center gap-3 -translate-x-1/2 left-1/2 py-2 px-3 border border-gray-800 rounded-full backdrop-blur bg-[rgba(255,255,255,0.7)]">
     <a
         v-for="link in links"
         :key="link.name"
         :href="link.url"
         :class="[
           'py-2 px-4 rounded-full',
-          isActive(link.url) ? 'bg-gray-800 text-gray-100' : '',
+          isActive(link.url) ? 'bg-gray-800 text-gray-100' : 'text-gray-800',
         ]"
     >
       {{ link.name }}
