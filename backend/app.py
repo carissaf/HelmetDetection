@@ -1,12 +1,7 @@
 from flask import Flask, request, jsonify
 from flask_cors import CORS
-import cv2
-import numpy as np
-import io
-import base64
-import joblib
+import numpy as np, io, base64, joblib, cv2, matplotlib.pyplot as plt
 from sklearn.cluster import DBSCAN
-import matplotlib.pyplot as plt
 
 app = Flask(__name__)
 CORS(app)
@@ -51,10 +46,10 @@ def preprocess_image(image):
 def extract_features_from_image(image):
     keypoints_orb, descriptors_orb = orb.detectAndCompute(image, None)
     keypoints_akaze, descriptors_akaze = akaze.detectAndCompute(image, None)
-    
+
     if descriptors_orb is None or descriptors_akaze is None:
         return None, None
-    
+
     min_rows = min(descriptors_orb.shape[0], descriptors_akaze.shape[0])
     descriptors_orb = descriptors_orb[:min_rows]
     descriptors_akaze = descriptors_akaze[:min_rows]
@@ -128,7 +123,7 @@ def upload_file():
             y_min = np.min(cluster_points[:, 1])
             y_max = np.max(cluster_points[:, 1])
             generated_bboxes.append([x_min, y_min, x_max, y_max])
-        
+
         # Mendapat value width dan height
         total_width = 0
         total_height = 0
@@ -139,10 +134,10 @@ def upload_file():
             total_width += width
             total_height += height
             c +=1
-        
+
         avg_width = int(total_width/c) if c>0 else 0
         avg_height = int(total_height/c) if c>0 else 0
-        
+
         # Mengklasifikasikan object pada setiap bounding box
         cropped_descriptors_list = []
         used_bboxes = []
@@ -163,7 +158,7 @@ def upload_file():
             for i, (predicted_class, prob) in enumerate(zip(input_y_pred, input_probabilities)):
               if(max(prob)>0.6):
                 used_bboxes.append((generated_bboxes[i], predicted_class, max(prob)))
-            
+
         # Menampilkan hasil klasifikasi dengan sliding windows
         all_windows = []
         window_size = (avg_width, avg_height) if avg_width > 0 and avg_height > 0 else (50,50)
@@ -180,7 +175,7 @@ def upload_file():
              if window_desc is not None:
                   windows_descriptors_list.append(window_desc)
                   windows_idx_list.append(i)
-        
+
         used_windows = []
         if windows_descriptors_list:
             padded_input_windows_descriptors_list = [pad_or_truncate_descriptors(desc, max_descriptors=100) for desc in windows_descriptors_list]
@@ -190,7 +185,7 @@ def upload_file():
             for i, (predicted_class, prob) in enumerate(zip(input_y_pred, input_probabilities)):
               if(max(prob)>0.7):
                 used_windows.append((windows_idx_list[i], predicted_class, max(prob)))
-        
+
         # Konversi warna menjadi RGB
         img_with_bbox = cv2.cvtColor(processed_image, cv2.COLOR_GRAY2RGB)
 
@@ -199,7 +194,7 @@ def upload_file():
             x_min, y_min, x_max, y_max = map(int, bbox)
             cv2.rectangle(img_with_bbox, (x_min, y_min), (x_max, y_max), (255, 0, 0), 2)
             confidence_score = proba
-            label_text = f"{id2label[label]} {confidence_score:.2f}"  
+            label_text = f"{id2label[label]} {confidence_score:.2f}"
             font = cv2.FONT_HERSHEY_SIMPLEX
             cv2.putText(img_with_bbox, label_text, (x_min, y_min - 10), font, 0.5, (255, 0, 0), 2)
 
@@ -216,12 +211,12 @@ def upload_file():
         _, buffer = cv2.imencode('.jpg', img_with_bbox)
         encoded_image = base64.b64encode(buffer).decode('utf-8')
         # Convert koordinat bounding box ke standard Python ints
-        
+
         generated_bboxes_int = []
         for bbox in generated_bboxes:
              generated_bboxes_int.append(list(map(int, bbox)))
-        
-        
+
+
         return jsonify({
             'predicted_class': str(id2label[label]),  # Konversi menjadi string jika numpy type
             'confidence': float(confidence),  # Konversi numpy.float menjadi Python float
