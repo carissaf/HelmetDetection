@@ -72,7 +72,6 @@ export default defineComponent({
 <template>
   <div class="flex flex-col items-center space-y-4 border border-gray-800 w-2/3 p-10 rounded-3xl">
     <div v-if="!submitted" class="flex flex-row justify-between w-full items-center">
-      <img src="/upload-img-banner.png" alt="Upload Image" class="w-[55%] rounded-lg" />
 
       <form @submit.prevent="uploadImage" class="flex flex-col w-[40%] justify-between">
         <div class="w-full mb-16">

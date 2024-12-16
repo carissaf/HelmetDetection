@@ -6,7 +6,6 @@ import UploadImageCard from "@/components/UploadImageCard.vue";
 <template>
   <section class="flex flex-col items-center justify-center min-h-screen">
     <div class="flex flex-row items-center gap-10 h-[80vh] self-center w-full md:px-80 mb-10">
-      <img class="w-2/6" src="/banner-home.png" alt="Banner Home" />
 
       <div class="flex flex-col gap-5">
         <h1 class="font-bold text-4xl">Try Out Our Helmet Detector</h1>
