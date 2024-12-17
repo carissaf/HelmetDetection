@@ -104,7 +104,7 @@ export default defineComponent({
                 </div>
                 <p class="text-xs/5 text-gray-600">PNG, JPG, JPEG</p>
 
-                <p v-if="selectedFile" class="mt-4 text-gray-600 font-semibold">Selected File: {{ selectedFile.name }}</p>
+                <p v-if="selectedFile" class="mt-4 text-gray-600 font-semibold w-full">Selected File: {{ selectedFile.name }}</p>
               </div>
             </div>
 <!--              <h1 class="font-bold text-2xl mb-5">Upload Your Image Here</h1>-->
